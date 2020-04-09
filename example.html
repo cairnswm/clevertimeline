@@ -1,0 +1,19 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="clevertimeline.css" />
+  </head>
+  <body>
+      <h1>Clever Timeline</h1>
+      <div id="cal"></div>
+    <script src="zepto.js"></script>
+    <script src="clevertimeline.js"></script>
+
+    <script language="javascript" type="text/javascript">
+      $(function() {
+        $("#cal").CleverTimeline({
+          startDate: new Date().setHours(0, 0, 0, 0)          
+        });
+      });
+    </script>
+  </body>
+</html>
