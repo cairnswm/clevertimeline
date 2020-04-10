@@ -1,26 +1,41 @@
 ;(function($) {
-    $.extend($.fn, {
-      CleverTimeline: function(options) {
+    $.fn.CleverTimeline = function(options) {
         var defaults = {
             startDate: new Date(),
             items: [
-                {time: "16:00",name: "Tango Class", busy: "Fully booked", message: "Fully booked" },
-                {time: "17:00",name: "Tango Class"},
-                {time: "18:00",name: "Tango Class"},
-                {time: "19:00",name: "Tango Class"},
-                {time: "20:00",name: "Tango Class"}
-            ]
+            ],
+            onSelectItem: function(item) {}
         };
-        var CleverTimeline = this;
         this.settings = {};
         var el = this;
+
         function init() {
             this.settings = $.extend({}, defaults, options);
-            ShowTimeline();
-            return el;
+            ShowTimeline();            
+            return this;
         };
 
-        init();
+        init();        
+
+        el.setItems = function(newItems) {
+            settings.items = [...newItems]; //Array.from(newItems);
+            console.log("Items", settings.items);
+            ShowTimeline();
+        }
+
+        onItemClick = function(time) {
+            var item = this.settings.items.find(i => i.time == time);
+            this.settings.onSelectItem(item);
+        }
+
+        setItemsX = (newItems) => {
+            console.log("old Items", el.settings.items);
+            console.log("Setting Items", newItems);
+            this.settings.items = Array.from(newItems);
+            
+            console.log("Items", el.settings.items);
+            ShowTimeline();
+        }
 
         function ShowTimeline() {
             html = '<div class="timeline">';
@@ -32,23 +47,17 @@
                 var side = ((index % 2) === 0 ? "right" : "left");
                 console.log(side);
                 html += '<div class="'+busy+'box timebox '+ side + 
-                        '">'+
+                        '" onclick="onItemClick(\''+item.time+'\')">'+
                         '<div class="timeinfo ' + busy +'">'+
                         '<div><span class="timeheader">'+item.time+'</span><i class="busymessage">'+message+'</i></div>'+
                         '<div class="timebody">'+item.name+'</div>'+
                         '</div>'+
                     '</div>';
             });
-            /*
-            '<div class="timebox left">'+
-              '<div class="timeinfo">'+
-                '<p class="timeheader">08:00</p>'+
-                '<p>Tango Class</p>'+
-              '</div>'+
-            '</div>'+*/
             html += '</div>';
             el.html(html);
         }
+        return el;
       }
-    });
+
 })(window.Zepto || window.jQuery);
